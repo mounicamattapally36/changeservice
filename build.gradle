@@ -1,0 +1,54 @@
+buildscript {
+	ext {
+		// cucumber tests
+		featureFilesLocation = "/resources/test/features"
+		cucumberResultJsonFilesLocation = "/reports/tests/"
+	}
+
+	dependencies {
+		classpath("gradle.plugin.com.github.spacialcircumstances:gradle-cucumber-reporting:0.0.12")
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.1'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.adp'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'io.cucumber:cucumber-junit:7.4.1'
+	testImplementation 'io.cucumber:cucumber-java:7.4.1'
+	testImplementation 'io.cucumber:cucumber-spring:7.4.1'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
